@@ -12,7 +12,7 @@
   "volta": {
     "node": "17.5.0"
   },
-  "dev-dependencies": {
+  "dependencies": {
     "axios": "^0.26.0",
     "dotenv": "^16.0.0"
   }
