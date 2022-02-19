@@ -86,10 +86,10 @@ const getEpisodeList = async () => {
 const init = async () => {
   await getAuthToken()
   const episodeNames = (await getEpisodeList());
-  if(!episodeNames.length) return
   const files = fs.readdirSync(epDir)
+  if(!episodeNames.length || files.length !== episodeNames.length) return
   files.forEach((file, i) => {
-    fs.rename(`${epDir}/${file}`, `${epDir}/${episodeNames[i]}.mkv`, (err) => console.log(err))
+    fs.rename(`${epDir}/${file}`, `${epDir}/${episodeNames[i+4]}.mkv`, (err) => console.log(err))
   })
 }
 
