@@ -6,6 +6,7 @@ import 'dotenv/config'
 const seriesId = 73903
 const seriesOrderType = 2
 const seasonNmb = 4
+const epDir = './dest'
 
 const $axios = axios.create({
   baseURL: 'https://api4.thetvdb.com/v4/'
@@ -78,13 +79,18 @@ const getEpisodeList = async () => {
     const number = e < 10 ? `0${e}` : e
     return `s${season}e${number} - ${name}`
   })
-  console.log(episodeArray) 
+  return episodeArray
 }
 
 
 const init = async () => {
   await getAuthToken()
-  getEpisodeList()
+  const episodeNames = (await getEpisodeList());
+  if(!episodeNames.length) return
+  const files = fs.readdirSync(epDir)
+  files.forEach((file, i) => {
+    fs.rename(`${epDir}/${file}`, `${epDir}/${episodeNames[i]}.mkv`, (err) => console.log(err))
+  })
 }
 
 init()
