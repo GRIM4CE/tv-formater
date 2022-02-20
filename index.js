@@ -3,9 +3,9 @@ import fs from 'fs'
 
 import 'dotenv/config'
 
-const seriesId = 73903
-const seriesOrderType = 2
-const seasonNmb = 4
+const seriesId = 0
+const seriesOrderType = 1
+const seasonNmb = 1
 const epDir = './dest'
 
 const $axios = axios.create({
@@ -58,7 +58,7 @@ const getAuthToken = async () => {
 }
 
 const getSeries = async (id) => {
-  return await $axios.get('series/73903/extended').then(res => res.data)
+  return await $axios.get(`series/${id}/extended`).then(res => res.data)
 }
 
 const getSeason = async() => {
@@ -72,7 +72,6 @@ const getSeason = async() => {
 
 const getEpisodeList = async () => {
   const { data } = await getSeason()
-
   const episodeArray = data.episodes.map(episode => {
     const { seasonNumber: s, number: e, name } = episode
     const season = s < 10 ? `0${s}` : s
@@ -87,7 +86,7 @@ const init = async () => {
   await getAuthToken()
   const episodeNames = (await getEpisodeList());
   const files = fs.readdirSync(epDir)
-  if(!episodeNames.length || files.length !== episodeNames.length) return
+  if(!episodeNames.length) return
   files.forEach((file, i) => {
     fs.rename(`${epDir}/${file}`, `${epDir}/${episodeNames[i]}.mkv`, (err) => {
       if(err) { console.log(err) }
